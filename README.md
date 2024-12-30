@@ -1,10 +1,10 @@
 # Go Development Prompts
 
-This repository contains a collection of prompts designed to help generate high-quality Go code documentation and tests. These prompts can be used with AI tool to maintain consistent standards across your Go projects.
+This repository contains a collection of prompts designed to help generate high-quality Go code documentation and tests. These prompts can be used with AI tools (like GitHub Copilot, ChatGPT, Claude, etc.) to maintain consistent standards across your Go projects.
 
 ## Available Prompts
 
-### [GoDoc Documentation](godoc/func.md)
+### [GoDoc Documentation](godoc/doc.md)
 A comprehensive prompt for generating consistent and effective GoDoc documentation for your Go code. This prompt helps you:
 - Write clear and concise function documentation
 - Document packages, interfaces, and constants
@@ -17,6 +17,13 @@ A focused guide for writing effective unit tests using the testify framework and
 - Use table-driven test patterns
 - Generate and use mocks effectively
 - Follow testing best practices
+
+### [Code Generation](gocode/generate.md)
+A comprehensive guide for generating idiomatic Go code. This prompt helps you:
+- Structure projects effectively
+- Follow Go best practices and patterns
+- Write clean, maintainable code
+- Implement common components correctly
 
 ## Usage
 
