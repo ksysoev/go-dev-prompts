@@ -8,15 +8,10 @@ Generate comprehensive GoDoc documentation for Go code following these guideline
 ```go
 // FunctionName [action verb] [what it does] [additional context if needed].
 // It [details about behavior, requirements, or important notes].
-//
-// Parameters:
-//   - param1: description if not obvious from name/type
-//   - param2: description if not obvious from name/type
-//
-// Returns:
-//   - type1: what this return value represents
-//   - error: conditions that trigger errors
-//
+// Param1 description if not obvious from name/type
+// Param2 description if not obvious from name/type
+// Returns type1, what this return value represents
+// Returns error conditions that trigger errors
 ```
 
 ### Key Points
@@ -37,15 +32,8 @@ Complex Function:
 ```go
 // ProcessData validates and transforms the input data according to the specified options.
 // It applies each transformation sequentially and stops on the first error encountered.
-//
-// Parameters:
-//   - data: raw input to be processed
-//   - opts: configuration options that control the transformation
-//
-// Returns:
-//   - processed data in the requested format
-//   - error if validation fails or any transformation step errors
-//
+// Accepts data raw input to be processed and opts that reperesents configuration options that control the transformation
+// Returns processed data in the requested format and error if validation fails or any transformation step errors
 func ProcessData(data []byte, opts *Options) ([]byte, error)
 ```
 
@@ -53,21 +41,14 @@ Error Handling:
 ```go
 // Divide performs division of two numbers.
 // It returns an error if the denominator is zero.
-//
-// Returns:
-//   - float64: the quotient of numerator/denominator
-//   - error: if denominator is 0 or if division results in overflow
 func Divide(numerator, denominator float64) (float64, error)
 ```
 
 ## Package Documentation
 
-Place package documentation in a separate `doc.go` file:
-
 ```go
 // Package calculator provides basic arithmetic operations
 // and advanced mathematical calculations.
-//
 package calculator
 ```
 
