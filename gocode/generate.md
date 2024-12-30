@@ -60,10 +60,9 @@ type UserRepository interface {
 ### Constructor Functions
 ```go
 // Use New + Type name for constructors
-func NewUserService(repo UserRepository, logger Logger) *UserService {
+func NewUserService(repo UserRepository) *UserService {
     return &UserService{
-        repo:   repo,
-        logger: logger,
+        repo: repo,
     }
 }
 ```
@@ -145,24 +144,17 @@ func DefaultConfig() Config {
    - Pass context for cancellation
    - Handle goroutine cleanup
 
-5. Testing
-   - Write tests alongside code
-   - Use table-driven tests
-   - Mock external dependencies
-
 ## Common Components
 
 ### HTTP Handler
 ```go
 type Handler struct {
     service Service
-    logger  Logger
 }
 
-func NewHandler(service Service, logger Logger) *Handler {
+func NewHandler(service Service) *Handler {
     return &Handler{
         service: service,
-        logger:  logger,
     }
 }
 
@@ -171,7 +163,7 @@ func (h *Handler) HandleGet(w http.ResponseWriter, r *http.Request) {
     
     result, err := h.service.Get(ctx)
     if err != nil {
-        h.logger.Error("get failed", "error", err)
+        slog.Error("get failed", "error", err)
         http.Error(w, "internal error", http.StatusInternalServerError)
         return
     }
@@ -183,14 +175,12 @@ func (h *Handler) HandleGet(w http.ResponseWriter, r *http.Request) {
 ### Service Layer
 ```go
 type Service struct {
-    repo   Repository
-    logger Logger
+    repo Repository
 }
 
-func NewService(repo Repository, logger Logger) *Service {
+func NewService(repo Repository) *Service {
     return &Service{
-        repo:   repo,
-        logger: logger,
+        repo: repo,
     }
 }
 
@@ -213,14 +203,12 @@ func (s *Service) Process(ctx context.Context, input Input) (*Output, error) {
 ### Repository Layer
 ```go
 type Repository struct {
-    db     *sql.DB
-    logger Logger
+    db *sql.DB
 }
 
-func NewRepository(db *sql.DB, logger Logger) *Repository {
+func NewRepository(db *sql.DB) *Repository {
     return &Repository{
-        db:     db,
-        logger: logger,
+        db: db,
     }
 }
 
@@ -238,6 +226,40 @@ func (r *Repository) Get(ctx context.Context, id string) (*Entity, error) {
 }
 ```
 
+## Logging with slog
+
+```go
+import "log/slog"
+
+func init() {
+    // Configure structured logging
+    logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+        Level: slog.LevelInfo,
+    }))
+    slog.SetDefault(logger)
+}
+
+// Usage examples
+func logExample() {
+    // Info logging
+    slog.Info("processing started", "user_id", "123")
+    
+    // Error logging with attributes
+    if err := process(); err != nil {
+        slog.Error("process failed", 
+            "error", err,
+            "attempt", 1,
+            "status", "retrying")
+    }
+    
+    // Debug logging with structured data
+    slog.Debug("cache status",
+        "hits", 10,
+        "misses", 2,
+        "ratio", 0.83)
+}
+```
+
 Remember:
 - Follow standard Go formatting (gofmt)
 - Use consistent naming conventions
@@ -245,3 +267,4 @@ Remember:
 - Handle errors appropriately
 - Use dependency injection
 - Keep functions focused and small
+- Use slog for structured logging
