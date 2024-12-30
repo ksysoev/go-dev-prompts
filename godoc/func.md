@@ -1,53 +1,121 @@
-Please write GoDoc documentation for the following GoLang function. Adhere to the guidelines below to ensure the documentation is comprehensive and follows best practices.
+# GoDoc Documentation Generator Prompt
 
-Guidelines:
-1. Function Description:
-   - Start with the Function Name: Begin the comment with the function name.
-   - Describe Functionality: Provide a brief description (1-3 sentences) of what the function does, using present tense and third person.
-2. Parameters:
-   - List Each Parameter: For each parameter, mention the name and its type.
-   - Describe Purpose: Provide a concise explanation of the purpose of each parameter only if the purpose is not clear from the function signature.
-3. Return Values:
-   - List Return Types: For each return value, specify its type.
-   - Describe Purpose: Explain what each return value represents.
-4. Error Handling:
-   - Describe Error Conditions: If the function returns an error, outline the conditions under which errors are returned.
-   - Use Clear Language: Ensure the description of error conditions is clear and specific.
-5. Edge Cases & Special Behavior:
-   - Highlight Edge Cases: Mention any edge cases or special behaviors the function handles.
-   - Explain Handling: Describe how the function behaves in these scenarios.
-6. Formatting:
-   - Maintain Proper Formatting: Ensure the documentation follows GoDoc formatting conventions.
-   - Use Markdown Properly: Utilize Markdown syntax for code blocks and lists where appropriate.
+Generate comprehensive GoDoc documentation for Go code following these guidelines:
 
-Expected Format:
-```
-// FunctionName performs [brief description of what the function does].
-// It takes [parameter1] of type [type1] and [parameter2] of type [type2] as inputs.
-// It returns [return1] of type [type1], which [description of return1],
-// and [return2] of type [type2], which [description of return2].
-// It returns an error if [condition leading to error].
+## Function Documentation
 
-[Provided code unchanged]
+### Basic Structure
+```go
+// FunctionName [action verb] [what it does] [additional context if needed].
+// It [details about behavior, requirements, or important notes].
+//
+// Parameters:
+//   - param1: description if not obvious from name/type
+//   - param2: description if not obvious from name/type
+//
+// Returns:
+//   - type1: what this return value represents
+//   - error: conditions that trigger errors
+//
 ```
 
-Example Documentation:
+### Key Points
+1. Start with an action verb (creates, performs, validates, etc.)
+2. Be concise but complete
+3. Document only non-obvious parameters
+4. Always document error conditions
+
+### Common Documentation Patterns
+
+Simple Function:
+```go
+// Sum adds two integers and returns their sum.
+func Sum(a, b int) int
 ```
-// Divide divides the numerator by the denominator and returns the result.
-// It takes two parameters: numerator of type float64 and denominator of type float64.
-// It returns a float64 which is the quotient of numerator divided by denominator.
+
+Complex Function:
+```go
+// ProcessData validates and transforms the input data according to the specified options.
+// It applies each transformation sequentially and stops on the first error encountered.
+//
+// Parameters:
+//   - data: raw input to be processed
+//   - opts: configuration options that control the transformation
+//
+// Returns:
+//   - processed data in the requested format
+//   - error if validation fails or any transformation step errors
+//
+func ProcessData(data []byte, opts *Options) ([]byte, error)
+```
+
+Error Handling:
+```go
+// Divide performs division of two numbers.
 // It returns an error if the denominator is zero.
-func Divide(numerator float64, denominator float64) (float64, error) {
-    if denominator == 0 {
-        return 0, fmt.Errorf("denominator cannot be zero")
-    }
-    return numerator / denominator, nil
+//
+// Returns:
+//   - float64: the quotient of numerator/denominator
+//   - error: if denominator is 0 or if division results in overflow
+func Divide(numerator, denominator float64) (float64, error)
+```
+
+## Package Documentation
+
+Place package documentation in a separate `doc.go` file:
+
+```go
+// Package calculator provides basic arithmetic operations
+// and advanced mathematical calculations.
+//
+package calculator
+```
+
+## Interface Documentation
+
+```go
+// Reader is the interface that wraps the basic Read method.
+//
+// Read reads up to len(p) bytes into p. It returns the number of bytes
+// read (0 <= n <= len(p)) and any error encountered.
+type Reader interface {
+    Read(p []byte) (n int, err error)
 }
 ```
 
-Instructions:
+## Constants and Variables
 
-- Replace Placeholders: Substitute [brief description of what the function does], [parameter1], [type1], etc., with the actual descriptions, parameter names, and types from the provided function.
-- Ensure Clarity: Make sure the descriptions are clear, concise, and free from redundancy.
-- Maintain Consistency: Follow GoDoc conventions for capitalization, punctuation, and formatting.
-- Include Only Relevant Information: Focus on behavior that is important to user of the function, and omit internal details of implementation.
+```go
+// Maximum number of retry attempts for network operations
+const MaxRetries = 3
+
+// DefaultTimeout is the default duration before operations timeout
+var DefaultTimeout = 30 * time.Second
+```
+
+## Best Practices
+
+1. Use Present Tense
+   - Good: "ProcessData validates..."
+   - Bad: "ProcessData will validate..."
+
+2. Be Specific About Types
+   - Good: "takes a slice of bytes"
+   - Bad: "takes data"
+
+3. Document Concurrency
+   - Mention if function is safe for concurrent use
+   - Document any synchronization requirements
+
+4. Document Panics
+   - If function can panic, document the conditions
+
+5. Performance Implications
+   - Document if function is computationally expensive
+   - Mention memory usage for large inputs
+
+Remember:
+- Documentation is for users of your code
+- Focus on behavior, not implementation
+- Be concise but complete
+- Document failure modes and edge cases
